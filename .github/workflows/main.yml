@@ -35,6 +35,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/proxy-reverso/node/upload-ai-api.kalimdor.com.br
-            pnpm pnpm install
+            pnpm install
             pnpm run build
 
