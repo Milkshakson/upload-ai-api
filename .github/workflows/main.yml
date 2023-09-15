@@ -14,13 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm run build
+          node-version: 18
 
       - name: Copy files to server
         uses: appleboy/scp-action@master
@@ -31,3 +25,16 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: "."  # Define o diretório atual como a origem (onde estão os arquivos do projeto)
           target: "/var/www/proxy-reverso/node/upload-ai-api.kalimdor.com.br"  # Define o destino no servidor
+
+      - name: Update API
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/proxy-reverso/node/upload-ai-api.kalimdor.com.br
+            pnpm pnpm install
+            pnpm run build
+
